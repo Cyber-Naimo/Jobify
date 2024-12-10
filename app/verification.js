@@ -20,18 +20,18 @@ const VerificationPage = () => {
       return;
     }
 
-    // Prepare FormData to send the image to the Python server
+    // Prepare FormData to send the image to the server
     const formData = new FormData();
     formData.append("image", {
       uri: frontImage,
       name: "cnic_front.jpg",
-      type: "image/jpeg", // Adjust type based on your image format
+      type: "image/jpeg",
     });
 
     try {
-      // Send the image to the Python server for text extraction
+      // Send the image to the backend for text extraction
       const response = await axios.post(
-        "http://localhost:5000/extract-text", // Replace with your Python server endpoint
+        "http://localhost:5000/extract-text", // Replace with your server's IP if needed
         formData,
         {
           headers: {
@@ -40,12 +40,9 @@ const VerificationPage = () => {
         }
       );
 
-      // Extracted text from the server response
       const extractedText = response.data.text;
 
-      console.log("Extracted Text:", extractedText);
-
-      // Compare the extracted text with the CNIC details from Redux
+      // Compare the extracted text with CNIC details
       if (extractedText.includes(cnicDetails)) {
         Alert.alert("Verification Successful", "CNIC details match.");
       } else {

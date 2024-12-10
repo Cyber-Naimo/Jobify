@@ -3,12 +3,12 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { colors } from "../constants/Colors"; // Import colors from your constraints file
-import { useTranslation } from "react-i18next"; // Import translation hook
+
 const SplashScreen = () => {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    router.push("/signup/roleSelection"); // Navigate to the next screen (Phone Number screen)
+    router.push("/phone/PhoneNumberScreen"); // Navigate to the next screen (Phone Number screen)
   };
 
   return (
