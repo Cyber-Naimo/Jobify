@@ -95,7 +95,7 @@ const CnicUploadScreen = () => {
           {frontImage ? (
             <Image source={{ uri: frontImage }} style={styles.image} />
           ) : (
-            <Text style={styles.icon}>📷 {t("tapToUpload")} </Text>
+            <Text style={styles.icon}>📷</Text>
           )}
         </TouchableOpacity>
         <Button
@@ -117,7 +117,7 @@ const CnicUploadScreen = () => {
           {backImage ? (
             <Image source={{ uri: backImage }} style={styles.image} />
           ) : (
-            <Text style={styles.icon}>📷 {t("tapToUpload")}</Text>
+            <Text style={styles.icon}>📷</Text>
           )}
         </TouchableOpacity>
 
