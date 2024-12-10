@@ -17,3 +17,12 @@ export default {
     tabIconSelected: tintColorDark,
   },
 };
+
+// constraints/color.ts
+
+export const colors = {
+  primary: '#9b4dca',  // Bright purple
+  white: '#ffffff',    // White
+  textColor: '#000000', // Black for text
+};
+
