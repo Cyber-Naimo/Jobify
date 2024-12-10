@@ -18,18 +18,18 @@ This is a React Native project built with **Expo**. It demonstrates image proces
 
 ### 1. Clone the Repository
 
-```bash
 git clone https://github.com/Cyber-Naimo/Jobify.git
-cd your-repo
-2. Install Dependencies
-bash
-Copy code
+cd Jobify
+
+### 2. Install Dependencies
+
 npm install
-3. Start the Development Server
-bash
-Copy code
+
+### 3. Start the Development Server
+
 npx expo start
-4. View on Expo Go
+
+### 4. View on Expo Go
+
 Scan the QR code from the terminal or the Expo Dev Tools in your browser using the Expo Go app.
 The app will open on your mobile device.
-```
