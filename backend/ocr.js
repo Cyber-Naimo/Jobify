@@ -8,7 +8,7 @@ async function preprocessImage(inputPath, outputPath) {
       .resize({ width: 800 }) // Resize the image to improve OCR speed
       .grayscale() // Convert to grayscale
       .toFile(outputPath); // Save the preprocessed image
-    console.log(`Preprocessed image saved to  ${outputPath}  `);
+    console.log(`Preprocessed image saved to ${outputPath}`);
   } catch (err) {
     console.error("Error preprocessing the image:", err);
   }

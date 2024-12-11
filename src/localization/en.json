@@ -34,7 +34,7 @@
 
   "cnicLabel": "CNIC Number",
   "cnicLabelUrdu": "شناختی کارڈ نمبر",
-  "cnicPlaceholder": "Enter your CNIC",
+  "cnicPlaceholder": "12345-6789012-3",
   "cnicPlaceholderUrdu": "اپنا شناختی کارڈ نمبر درج کریں",
 
   "dob": "Date of Birth",

@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Dimensions,
   Alert,
+  Platform,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -78,6 +79,18 @@ const CnicUploadScreen = () => {
     }
   };
 
+  // Handle file selection for browser
+  const handleFileUpload = (event, type) => {
+    const file = event.target.files[0];
+    if (file) {
+      const fileUri = URL.createObjectURL(file);
+      dispatch(
+        type === "front" ? setFrontImage(fileUri) : setBackImage(fileUri)
+      );
+      Alert.alert("Success", "Image uploaded successfully!");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>{t("uploadCnicTitle")}</Text>
@@ -95,7 +108,17 @@ const CnicUploadScreen = () => {
           {frontImage ? (
             <Image source={{ uri: frontImage }} style={styles.image} />
           ) : (
-            <Text style={styles.icon}>📷</Text>
+            <>
+              <Text style={styles.icon}>📷</Text>
+              {Platform.OS === "web" && (
+                <input
+                  type="file"
+                  accept="image/*"
+                  style={styles.fileInput}
+                  onChange={(e) => handleFileUpload(e, "front")}
+                />
+              )}
+            </>
           )}
         </TouchableOpacity>
         <Button
@@ -117,7 +140,17 @@ const CnicUploadScreen = () => {
           {backImage ? (
             <Image source={{ uri: backImage }} style={styles.image} />
           ) : (
-            <Text style={styles.icon}>📷</Text>
+            <>
+              <Text style={styles.icon}>📷</Text>
+              {Platform.OS === "web" && (
+                <input
+                  type="file"
+                  accept="image/*"
+                  style={styles.fileInput}
+                  onChange={(e) => handleFileUpload(e, "back")}
+                />
+              )}
+            </>
           )}
         </TouchableOpacity>
 
@@ -203,6 +236,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 10,
+  },
+  fileInput: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    opacity: 0,
+    cursor: "pointer",
   },
 });
 

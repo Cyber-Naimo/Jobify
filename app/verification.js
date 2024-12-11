@@ -8,43 +8,50 @@ import {
   Alert,
 } from "react-native";
 import { useSelector } from "react-redux";
+import { useRouter } from "expo-router";
 import axios from "axios";
 
 const VerificationPage = () => {
-  const frontImage = useSelector((state) => state.cnic.frontImage); // Get the front image from Redux
-  const cnicDetails = useSelector((state) => state.user.cnic); // Get CNIC details from Redux
+  const frontImage = useSelector((state) => state.cnic.frontImage);
+  const backImage = useSelector((state) => state.cnic.backImage);
+  const cnicDetails = useSelector((state) => state.user.cnic);
+  const router = useRouter();
 
   const handleCNICVerification = async () => {
-    if (!frontImage) {
-      Alert.alert("Error", "Please upload the CNIC front image.");
+    if (!backImage) {
+      Alert.alert("Error", "Please upload the CNIC Back image.");
       return;
     }
 
-    // Prepare FormData to send the image to the server
-    const formData = new FormData();
-    formData.append("image", {
-      uri: frontImage,
-      name: "cnic_front.jpg",
-      type: "image/jpeg",
-    });
-
     try {
-      // Send the image to the backend for text extraction
+      // Prepare FormData to send the image to the OCR server
+      const formData = new FormData();
+      formData.append("image", {
+        uri: backImage, // Use the selected image URI
+        name: "cnic_back.jpg", // Ensure correct name
+        type: "image/jpeg", // Ensure correct type
+      });
+
+      // Send the image to the OCR server
       const response = await axios.post(
-        "http://localhost:5000/extract-text", // Replace with your server's IP if needed
+        "https://api.api-ninjas.com/v1/imagetotext", // OCR API endpoint
         formData,
         {
           headers: {
+            "X-Api-Key": "k2UT2akAUcGEm/Hv9QAwxQ==WlIWF9QqzyOMHJzR", // API Key
             "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      const extractedText = response.data.text;
+      const extractedCNIC = response.data
+        .filter((item) => item.text.includes(cnicDetails))
+        .map((item) => item.text)
+        .join("");
 
-      // Compare the extracted text with CNIC details
-      if (extractedText.includes(cnicDetails)) {
+      if (extractedCNIC === cnicDetails) {
         Alert.alert("Verification Successful", "CNIC details match.");
+        router.push("./home");
       } else {
         Alert.alert("Verification Failed", "CNIC details do not match.");
       }
@@ -57,11 +64,6 @@ const VerificationPage = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Verify Your CNIC</Text>
-      {frontImage ? (
-        <Image source={{ uri: frontImage }} style={styles.image} />
-      ) : (
-        <Text style={styles.error}>No image selected.</Text>
-      )}
 
       <TouchableOpacity style={styles.button} onPress={handleCNICVerification}>
         <Text style={styles.buttonText}>Verify CNIC</Text>

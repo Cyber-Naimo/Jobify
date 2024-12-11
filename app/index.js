@@ -8,7 +8,7 @@ const SplashScreen = () => {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    router.push("/phone/PhoneNumberScreen"); // Navigate to the next screen (Phone Number screen)
+    router.push("./phone/PhoneNumberScreen"); // Navigate to the next screen (Phone Number screen)
   };
 
   return (

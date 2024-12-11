@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   name: "",
   fatherName: "",
-  cnic: "42101-1894491-5",
+  cnic: "",
   dob: "",
   gender: "",
   country: "",
