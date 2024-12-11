@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // You can use other icons as per your design needs
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useTranslation } from "react-i18next"; // i18n hook
-import { colors } from "../../constants/Colors"; // Colors
+import { useTranslation } from "react-i18next";
+import { colors } from "../../constants/Colors";
 export default function RoleSelectionScreen() {
-  const [selectedRole, setSelectedRole] = useState(null); // Track selected role
-  const { t } = useTranslation(); // Localization hook
-  const router = useRouter(); // Use router for navigation
+  const [selectedRole, setSelectedRole] = useState(null);
+  const { t } = useTranslation();
+  const router = useRouter();
 
   // Function to handle role selection
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
     if (role === "user") {
-      router.push("/signup/user"); // Navigate to User signup
+      router.push("/signup/user");
     } else if (role === "employee") {
-      router.push("/signup/employee"); // Navigate to Employee signup
+      router.push("/signup/user");
     }
   };
 

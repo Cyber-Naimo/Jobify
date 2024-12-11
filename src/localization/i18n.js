@@ -9,7 +9,7 @@ i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
   },
-  interpolation: { escapeValue: false }, // React already handles XSS
+  interpolation: { escapeValue: false },
 });
 
 export default i18n;

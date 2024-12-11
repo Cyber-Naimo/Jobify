@@ -12,12 +12,12 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system"; // Import FileSystem
-import { setProfileImage } from "../../src/store/profileSlice"; // Import the action
+import * as FileSystem from "expo-file-system";
+import { setProfileImage } from "../../src/store/profileSlice";
 import { useRouter } from "expo-router";
 const { width } = Dimensions.get("window");
 import { useTranslation } from "react-i18next";
-
+import { colors } from "../../constants/Colors";
 const ProfilePictureScreen = () => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -25,6 +25,14 @@ const ProfilePictureScreen = () => {
   const profileImage = useSelector((state) => state.profile.profileImage);
 
   // Function to save the image locally
+  const handleFileUpload = (event, type) => {
+    const file = event.target.files[0];
+    if (file) {
+      const fileUri = URL.createObjectURL(file);
+      dispatch(setProfileImage(fileUri));
+      Alert.alert("Success", "Image uploaded successfully!");
+    }
+  };
   const saveImageLocally = async (imageUri) => {
     try {
       const fileName = imageUri.split("/").pop();
@@ -36,7 +44,6 @@ const ProfilePictureScreen = () => {
         to: localUri,
       });
 
-      // Dispatch the action to save the local URI in Redux
       dispatch(setProfileImage(localUri));
 
       Alert.alert("Success", "Image saved successfully!");
@@ -66,7 +73,7 @@ const ProfilePictureScreen = () => {
 
       if (!result.canceled) {
         const uri = result.assets[0].uri;
-        await saveImageLocally(uri); // Save the image locally
+        await saveImageLocally(uri);
       }
     } catch (error) {
       console.error("ImagePicker Error:", error);
@@ -94,10 +101,12 @@ const ProfilePictureScreen = () => {
         </TouchableOpacity>
         <Text style={styles.text}>{t("tapToUpload")}</Text>
         <Text style={styles.text}>{t("tapToUploadUrdu")}</Text>
-        <Button
-          title="Open Camera & Take Photo"
+        <TouchableOpacity
+          style={styles.obutton}
           onPress={() => handleImagePick(true)} // Open camera to take a photo
-        />
+        >
+          <Text style={styles.buttonText}>{t("takePhoto")}</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
@@ -115,8 +124,16 @@ const ProfilePictureScreen = () => {
 // Styles
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#007BFF",
+    backgroundColor: colors.primary,
     marginTop: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  obutton: {
+    backgroundColor: colors.primary,
+    marginTop: 1,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
@@ -167,7 +184,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    color: "#888",
+    color: "black",
     marginBottom: 20,
   },
 });

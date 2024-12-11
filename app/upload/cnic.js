@@ -10,6 +10,7 @@ import {
   Dimensions,
   Alert,
   Platform,
+  ScrollView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -18,6 +19,7 @@ import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 const { width } = Dimensions.get("window");
+import { colors } from "../../constants/Colors";
 
 const CnicUploadScreen = () => {
   const { t } = useTranslation();
@@ -92,89 +94,104 @@ const CnicUploadScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>{t("uploadCnicTitle")}</Text>
+    <ScrollView style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>{t("uploadCnicTitle")}</Text>
 
-      {/* Front CNIC */}
-      <View style={styles.uploadContainer}>
-        <View style={styles.labelContainer}>
-          <Text style={styles.heading}>{t("frontCnicLabel")}</Text>
-          <Text style={styles.headingUrdu}>{t("frontCnicLabelUrdu")}</Text>
+        {/* Front CNIC */}
+        <View style={styles.uploadContainer}>
+          <View style={styles.labelContainer}>
+            <Text style={styles.heading}>{t("frontCnicLabel")}</Text>
+            <Text style={styles.headingUrdu}>{t("frontCnicLabelUrdu")}</Text>
+          </View>
+          <TouchableOpacity
+            style={styles.imageContainer}
+            onPress={() => handleImagePick("front")}
+          >
+            {frontImage ? (
+              <Image source={{ uri: frontImage }} style={styles.image} />
+            ) : (
+              <>
+                <Text style={styles.icon}>📷</Text>
+                {Platform.OS === "web" && (
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={styles.fileInput}
+                    onChange={(e) => handleFileUpload(e, "front")}
+                  />
+                )}
+              </>
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.obutton}
+            onPress={() => handleImagePick("front", true)} // true to use camera
+          >
+            <Text style={styles.buttonText}>{t("takePhoto")}</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={styles.imageContainer}
-          onPress={() => handleImagePick("front")}
-        >
-          {frontImage ? (
-            <Image source={{ uri: frontImage }} style={styles.image} />
-          ) : (
-            <>
-              <Text style={styles.icon}>📷</Text>
-              {Platform.OS === "web" && (
-                <input
-                  type="file"
-                  accept="image/*"
-                  style={styles.fileInput}
-                  onChange={(e) => handleFileUpload(e, "front")}
-                />
-              )}
-            </>
-          )}
-        </TouchableOpacity>
-        <Button
-          title={t("takePhoto")}
-          onPress={() => handleImagePick("front", true)} // true to use camera
-        />
-      </View>
 
-      {/* Back CNIC */}
-      <View style={styles.uploadContainer}>
-        <View style={styles.labelContainer}>
-          <Text style={styles.heading}>{t("backCnicLabel")}</Text>
-          <Text style={styles.headingUrdu}>{t("backCnicLabelUrdu")}</Text>
+        {/* Back CNIC */}
+        <View style={styles.uploadContainer}>
+          <View style={styles.labelContainer}>
+            <Text style={styles.heading}>{t("backCnicLabel")}</Text>
+            <Text style={styles.headingUrdu}>{t("backCnicLabelUrdu")}</Text>
+          </View>
+          <TouchableOpacity
+            style={styles.imageContainer}
+            onPress={() => handleImagePick("back")}
+          >
+            {backImage ? (
+              <Image source={{ uri: backImage }} style={styles.image} />
+            ) : (
+              <>
+                <Text style={styles.icon}>📷</Text>
+                {Platform.OS === "web" && (
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={styles.fileInput}
+                    onChange={(e) => handleFileUpload(e, "back")}
+                  />
+                )}
+              </>
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.obutton}
+            onPress={() => handleImagePick("back", true)} // true to use camera
+          >
+            <Text style={styles.buttonText}>{t("takePhoto")}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              router.push("/upload/profile");
+            }}
+          >
+            <Text style={styles.buttonText}>{t("nextButton")}</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={styles.imageContainer}
-          onPress={() => handleImagePick("back")}
-        >
-          {backImage ? (
-            <Image source={{ uri: backImage }} style={styles.image} />
-          ) : (
-            <>
-              <Text style={styles.icon}>📷</Text>
-              {Platform.OS === "web" && (
-                <input
-                  type="file"
-                  accept="image/*"
-                  style={styles.fileInput}
-                  onChange={(e) => handleFileUpload(e, "back")}
-                />
-              )}
-            </>
-          )}
-        </TouchableOpacity>
-
-        <Button
-          title={t("takePhoto")}
-          onPress={() => handleImagePick("back", true)} // true to use camera
-        />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            router.push("/upload/profile");
-          }}
-        >
-          <Text style={styles.buttonText}>{t("nextButton")}</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#007BFF",
+    backgroundColor: colors.primary,
     marginTop: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  obutton: {
+    backgroundColor: colors.primary,
+    marginTop: 1,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
@@ -193,7 +210,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#4CAF50",
+    color: colors.primary,
     textAlign: "center",
     marginBottom: 20,
   },

@@ -11,14 +11,14 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useDispatch, useSelector } from "react-redux";
-import { updateField, saveUserData } from "../../src/store/userSlice"; // Redux actions
+import { updateField, saveUserData } from "../../src/store/userSlice";
 import { colors } from "../../constants/Colors";
 import { useTranslation } from "react-i18next"; // Localization
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 
 export default function SignupScreen() {
-  const { t } = useTranslation(); // Hook for translations
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 

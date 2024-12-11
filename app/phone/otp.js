@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { OtpInput } from "react-native-otp-entry";
 import { useRouter } from "expo-router";
-import { useTranslation } from "react-i18next"; // Import translation hook
-import { colors } from "../../constants/Colors"; // Adjust the path if needed
+import { useTranslation } from "react-i18next";
+import { colors } from "../../constants/Colors";
 import roleSelection from "../signup/roleSelection";
 export default function OtpScreen() {
-  const { t } = useTranslation(); // Translation hook
+  const { t } = useTranslation();
   const router = useRouter();
   const [countdown, setCountdown] = useState(60);
   const [isResendEnabled, setIsResendEnabled] = useState(false);

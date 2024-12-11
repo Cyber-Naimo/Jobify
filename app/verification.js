@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { useRouter } from "expo-router";
 import axios from "axios";
 
 const VerificationPage = () => {
+  const [loading, setLoading] = useState(false);
   const frontImage = useSelector((state) => state.cnic.frontImage);
   const backImage = useSelector((state) => state.cnic.backImage);
   const cnicDetails = useSelector((state) => state.user.cnic);
@@ -23,13 +24,14 @@ const VerificationPage = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
-      // Prepare FormData to send the image to the OCR server
       const formData = new FormData();
       formData.append("image", {
-        uri: backImage, // Use the selected image URI
-        name: "cnic_back.jpg", // Ensure correct name
-        type: "image/jpeg", // Ensure correct type
+        uri: backImage,
+        name: "cnic_back.jpg",
+        type: "image/jpeg",
       });
 
       // Send the image to the OCR server
@@ -44,20 +46,32 @@ const VerificationPage = () => {
         }
       );
 
-      const extractedCNIC = response.data
-        .filter((item) => item.text.includes(cnicDetails))
-        .map((item) => item.text)
+      const normalizeCNIC = (cnic) => {
+        return cnic.replace(/[^0-9]/g, "");
+      };
+
+      const normalizedCNICDetails = normalizeCNIC(cnicDetails);
+      const normalizedExtractedCNIC = response.data
+        .map((item) => normalizeCNIC(item.text))
         .join("");
 
-      if (extractedCNIC === cnicDetails) {
+      const isContinuousMatch = normalizedExtractedCNIC.includes(
+        normalizedCNICDetails
+      );
+      if (isContinuousMatch) {
         Alert.alert("Verification Successful", "CNIC details match.");
         router.push("./home");
       } else {
-        Alert.alert("Verification Failed", "CNIC details do not match.");
+        Alert.alert(
+          "Verification Failed",
+          "CNIC details do not match. Please Upload Back Image Again"
+        );
       }
     } catch (error) {
       console.error("Verification Error:", error.message);
       Alert.alert("Error", "Failed to verify CNIC. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,9 +79,17 @@ const VerificationPage = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Verify Your CNIC</Text>
 
-      <TouchableOpacity style={styles.button} onPress={handleCNICVerification}>
-        <Text style={styles.buttonText}>Verify CNIC</Text>
-      </TouchableOpacity>
+      {/* Show loader when loading is true */}
+      {loading ? (
+        <ActivityIndicator size="large" color="#007BFF" />
+      ) : (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleCNICVerification}
+        >
+          <Text style={styles.buttonText}>Verify CNIC</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -83,12 +105,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
-  },
-  image: {
-    width: 200,
-    height: 200,
-    marginBottom: 20,
-    borderRadius: 10,
   },
   button: {
     backgroundColor: "#007BFF",
