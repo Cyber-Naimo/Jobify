@@ -107,6 +107,7 @@ export default function SignupScreen() {
             </View>
             <TextInput
               style={styles.input}
+              maxLength={30}
               placeholder={t("namePlaceholder")}
               value={user.name}
               onChangeText={(text) => handleInputChange("name", text)}
@@ -121,6 +122,7 @@ export default function SignupScreen() {
             </View>
             <TextInput
               style={styles.input}
+              maxLength={30}
               placeholder={t("fatherNamePlaceholder")}
               value={user.fatherName}
               onChangeText={(text) => handleInputChange("fatherName", text)}
@@ -135,6 +137,7 @@ export default function SignupScreen() {
             </View>
             <TextInput
               style={styles.input}
+              maxLength={15}
               placeholder={t("cnicPlaceholder")}
               value={user.cnic}
               onChangeText={(text) => handleInputChange("cnic", text)}
@@ -232,6 +235,7 @@ export default function SignupScreen() {
             </View>
             <TextInput
               style={styles.input}
+              maxLength={30}
               placeholder={t("countryPlaceholder")}
               value={user.country}
               onChangeText={(text) => handleInputChange("country", text)}
@@ -247,6 +251,8 @@ export default function SignupScreen() {
             </View>
             <TextInput
               style={styles.input}
+              multiline
+              maxLength={100}
               placeholder={t("temporaryAddressPlaceholder")}
               value={user.temporaryAddress}
               onChangeText={(text) =>
@@ -264,6 +270,8 @@ export default function SignupScreen() {
             </View>
             <TextInput
               style={styles.input}
+              multiline
+              maxLength={100}
               placeholder={t("permanentAddressPlaceholder")}
               value={user.permanentAddress}
               onChangeText={(text) =>

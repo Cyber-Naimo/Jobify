@@ -32,6 +32,7 @@ const PhoneNumberScreen = () => {
       <TextInput
         style={styles.input}
         keyboardType="phone-pad"
+        maxLength={11}
         placeholder={t("phoneNumberPlaceholder")}
         placeholderTextColor={colors.textColor}
         value={phoneNumber}
